@@ -1,4 +1,7 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, hasMany, model, property, belongsTo} from '@loopback/repository';
+import {BloqueCargo} from './bloque-cargo.model';
+import {Bloque} from './bloque.model';
+import {Eleccion} from './eleccion.model';
 
 @model()
 export class Cargo extends Entity {
@@ -20,6 +23,11 @@ export class Cargo extends Entity {
   })
   descripcion?: string;
 
+  @hasMany(() => Bloque, {through: {model: () => BloqueCargo}})
+  bloques: Bloque[];
+
+  @belongsTo(() => Eleccion)
+  eleccionId: number;
 
   constructor(data?: Partial<Cargo>) {
     super(data);
