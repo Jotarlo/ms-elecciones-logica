@@ -13,3 +13,4 @@ export * from './eleccion-cargo.controller';
 export * from './cargo-eleccion.controller';
 export * from './movimiento.controller';
 export * from './candidato.controller';
+export * from './archivos.controller';
