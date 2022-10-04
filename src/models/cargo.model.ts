@@ -1,9 +1,20 @@
-import {Entity, hasMany, model, property, belongsTo} from '@loopback/repository';
+import {belongsTo, Entity, hasMany, model, property} from '@loopback/repository';
 import {BloqueCargo} from './bloque-cargo.model';
 import {Bloque} from './bloque.model';
 import {Eleccion} from './eleccion.model';
 
-@model()
+@model({
+  settings: {
+    foreignKeys: {
+      fk_eleccion_del_cargo: {
+        name: 'fk_eleccion_del_cargo',
+        entity: 'Eleccion',
+        entityKey: 'id',
+        foreignKey: 'eleccionId',
+      },
+    },
+  },
+})
 export class Cargo extends Entity {
   @property({
     type: 'number',
