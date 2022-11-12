@@ -3,7 +3,9 @@ export namespace GeneralConfig {
   export const metodo_validar_jwt = "validate-token";
   export const adminRolId = "631fce3db1c44017449ac402";
   export const carpetaArchivosCandidatos = '../../archivos/candidatos/';
+  export const carpetaArchivosMovimientos = '../../archivos/movimientos/';
 
   export const campoDeCandidato = 'file';
+  export const campoDeMovimiento = 'file';
   export const extensionesImagenes = ['.SVG', '.PNG', '.JPG', '.JPEG'];
 }

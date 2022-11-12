@@ -13,6 +13,7 @@ import path from 'path';
 import {promisify} from 'util';
 import {GeneralConfig} from '../config/general-config';
 
+import {authenticate} from '@loopback/authentication';
 import fs from 'fs';
 const readdir = promisify(fs.readdir);
 /**
@@ -21,8 +22,8 @@ const readdir = promisify(fs.readdir);
 export class ArchivosController {
   constructor() { }
 
-  //@authenticate('admin')
-  @post('/cargar-archivo', {
+  @authenticate('admin')
+  @post('/cargar-archivo-candidato', {
     responses: {
       200: {
         content: {
@@ -36,7 +37,7 @@ export class ArchivosController {
       },
     },
   })
-  async fileUploading(
+  async fileCandidateUploading(
     @inject(RestBindings.Http.RESPONSE) response: Response,
     @requestBody.file() request: Request,
   ): Promise<object | false> {
@@ -44,6 +45,43 @@ export class ArchivosController {
     let res = await this.StoreFileToPath(
       filePath,
       GeneralConfig.campoDeCandidato,
+      request,
+      response,
+      GeneralConfig.extensionesImagenes,
+    );
+    if (res) {
+      const filename = response.req?.file?.filename;
+      if (filename) {
+        return {file: filename};
+      }
+    }
+    return res;
+  }
+
+
+  @authenticate('admin')
+  @post('/cargar-archivo-movimiento', {
+    responses: {
+      200: {
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+            },
+          },
+        },
+        description: 'Archivo a cargar',
+      },
+    },
+  })
+  async filePartyUploading(
+    @inject(RestBindings.Http.RESPONSE) response: Response,
+    @requestBody.file() request: Request,
+  ): Promise<object | false> {
+    const filePath = path.join(__dirname, GeneralConfig.carpetaArchivosMovimientos);
+    let res = await this.StoreFileToPath(
+      filePath,
+      GeneralConfig.campoDeMovimiento,
       request,
       response,
       GeneralConfig.extensionesImagenes,
@@ -167,6 +205,7 @@ export class ArchivosController {
         filePath = path.join(__dirname, GeneralConfig.carpetaArchivosCandidatos);
         break;
       case 2:
+        filePath = path.join(__dirname, GeneralConfig.carpetaArchivosMovimientos);
         break;
       case 3:
         break;

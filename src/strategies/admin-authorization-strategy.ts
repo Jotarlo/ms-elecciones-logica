@@ -15,6 +15,8 @@ export class AdminAuthorizationStrategy implements AuthenticationStrategy {
     console.log(`Token de la request: ${token}`);
     if (token) {
       const esValido = await fetch(`${GeneralConfig.url_ms_seguridad}/${GeneralConfig.metodo_validar_jwt}/${token}`)
+      console.log("Es válido: " + esValido)
+      console.log(esValido)
       let rolId = await esValido.text();
       if (rolId == GeneralConfig.adminRolId) {
         // validar el id
